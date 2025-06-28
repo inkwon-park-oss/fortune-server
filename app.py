@@ -1,7 +1,8 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, Response
 import requests
 from bs4 import BeautifulSoup
 import os
+import json
 
 app = Flask(__name__)
 
@@ -18,12 +19,17 @@ def get_fortune():
 
         for s, f in zip(signs, fortunes):
             if sign in s.text:
-                return jsonify({"sign": sign, "fortune": f.text.strip()})
-        return jsonify({"error": "띠를 찾을 수 없습니다."})
-    except Exception as e:
-        return jsonify({"error": str(e)})
+                data = {"sign": sign, "fortune": f.text.strip()}
+                return Response(json.dumps(data, ensure_ascii=False), mimetype="application/json")
 
-# 🔧 여기 반드시 수정됨
+        error = {"error": "띠를 찾을 수 없습니다."}
+        return Response(json.dumps(error, ensure_ascii=False), mimetype="application/json")
+
+    except Exception as e:
+        err = {"error": str(e)}
+        return Response(json.dumps(err, ensure_ascii=False), mimetype="application/json")
+
+# 외부 접속 가능하게 설정
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
