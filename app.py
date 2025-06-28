@@ -17,10 +17,11 @@ def get_fortune():
         signs = soup.select(".zodiac_sign .txt")
         fortunes = soup.select(".zodiac_sign .text")
 
-        for s, f in zip(signs, fortunes):
-            if sign in s.text:
-                data = {"sign": sign, "fortune": f.text.strip()}
-                return Response(json.dumps(data, ensure_ascii=False), mimetype="application/json")
+        lfor s, f in zip(signs, fortunes):
+    s_text = s.text.strip().replace(" ", "").replace("\n", "")
+    if sign.replace(" ", "") in s_text:
+        data = {"sign": sign, "fortune": f.text.strip()}
+        return Response(json.dumps(data, ensure_ascii=False), mimetype="application/json")
 
         error = {"error": "띠를 찾을 수 없습니다."}
         return Response(json.dumps(error, ensure_ascii=False), mimetype="application/json")
