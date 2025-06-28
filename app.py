@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import requests
 from bs4 import BeautifulSoup
+import os
 
 app = Flask(__name__)
 
@@ -22,5 +23,7 @@ def get_fortune():
     except Exception as e:
         return jsonify({"error": str(e)})
 
+# 🔧 여기 반드시 수정됨
 if __name__ == "__main__":
-    app.run()
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
