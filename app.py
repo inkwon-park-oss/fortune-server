@@ -31,5 +31,6 @@ def get_fortune():
 
 # 외부 접속 가능하게 설정
 if __name__ == "__main__":
+    import os
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
